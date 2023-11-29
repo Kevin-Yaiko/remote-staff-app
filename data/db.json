@@ -1,0 +1,16 @@
+{
+  "classes" : [
+    {
+      "id": 3709,
+      "name": "Introduction to Number Theory",
+      "code": "iNT",
+      "start": "11/1/2023",
+      "end": "2/7/2024",
+      "weeks": 12,
+      "days": "[Wed]",
+      "start-time": "21:30",
+      "duration-time": 90,
+      "has-writing-problems": true
+    }
+  ]
+}
