@@ -15,17 +15,36 @@ export const ClassList = () => {
     fetchClasses()
   }, [fetchClasses])
 
-
+  console.log(classes)
   const columns = useMemo(
     () => [
     {
-      header: 'Class',
-      accessorKey: 'name',
+      header: 'Rank',
+      size: 40,
+      Cell: ({ row }) => (
+        <input type="number" min="1" max="10" step="1" />
+      )
     },
     {
-      header: 'ID',
-      accessorKey: 'id',
-    }
+      header: 'Class',
+      accessorKey: 'name',
+      Cell: ({ row }) => (
+        <div>
+          <p>{row.original.name} ({row.original.id})</p>
+        </div>
+      )
+    },
+    {
+      header: 'Day',
+      accessorKey: 'days',
+      Cell: ({ row }) => (
+        <div>
+          {row.original.days.map((day, idx) => (
+            <p key={idx}>{day}</p>
+          ))}
+        </div>
+      )
+    },
     ],
     [],
   )
