@@ -16,10 +16,6 @@ export const ClassList = () => {
     fetchClasses()
   }, [fetchClasses])
 
-  const [ranks, setRanks] = useState(classes.map(instance => {
-    return {"id": instance.id, "rank" : 0}
-  }))
-
 
   const handleRankChange = (e) => {
     const rowData = {"id": e.target.id, "rank": e.target.value}
