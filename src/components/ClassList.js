@@ -4,9 +4,9 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 export const ClassList = () => {
   const [classes, setClasses] = useState([])
   const [url, setUrl] = useState("http://localhost:8000/classes")
-  const [ranks, setRanks] = useState(classes.map(instance => {
-    return {"id": instance.id, "rank" : 0}
-  }))
+  // const [ranks, setRanks] = useState(classes.map(instance => {
+  //   return {"id": instance.id, "rank" : 0}
+  // }))
 
   const fetchClasses = useCallback(async() => {
     const response = await fetch(url)
@@ -17,6 +17,10 @@ export const ClassList = () => {
   useEffect(() => {
     fetchClasses()
   }, [fetchClasses])
+
+  const [ranks, setRanks] = useState(classes.map(instance => {
+    return {"id": instance.id, "rank" : 0}
+  }))
 
 
   const handleRankChange = (e) => {
@@ -30,6 +34,12 @@ export const ClassList = () => {
       return [...nonSelectedClasses, rowData]
     }
   })
+
+  // setRanks((prevRanks) => {
+  //   console.log(prevRanks)
+  //   // console.log(selectedClass)
+  //   return [...prevRanks]
+  // })
   }
 
   useEffect(() => {
@@ -38,10 +48,8 @@ export const ClassList = () => {
 
   const setValue = (id) => {
     const rankedInstance = ranks.find(instance => instance.id === id);
-    console.log("ID:", id);
-    console.log("ranks:", ranks);
-    console.log("rankedInstance:", rankedInstance);
-    return rankedInstance ? rankedInstance.rank : "";
+
+    // return rankedInstance[0].rank
   }
   
   
@@ -59,7 +67,7 @@ export const ClassList = () => {
         max="10" 
         step="1" 
         id={row.original.id}
-        value={setValue(row.original.id) || ""}
+        value={setValue(row.original.id)}
         onChange={handleRankChange}
         />
       )
