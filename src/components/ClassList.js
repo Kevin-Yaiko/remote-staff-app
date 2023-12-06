@@ -28,6 +28,7 @@ export const ClassList = () => {
     {
       header: 'Class',
       accessorKey: 'name',
+      size: 40,
       Cell: ({ row }) => (
         <div>
           <p>{row.original.name} ({row.original.id})</p>
@@ -39,12 +40,27 @@ export const ClassList = () => {
       accessorKey: 'days',
       Cell: ({ row }) => (
         <div>
-          {row.original.days.map((day, idx) => (
-            <p key={idx}>{day}</p>
-          ))}
+          {row.original.days.map((day, idx) => {
+            if (row.original.days.length > 1 && row.original.days.length - idx > 1) {
+              return <span key={idx}>{day}, </span>
+            } else
+            return <span key={idx}>{day}</span>}
+          )}
         </div>
       )
     },
+    {
+      header: "Start",
+      accessorKey: "start",
+    },
+    {
+      header: "End",
+      accessorKey: "end"
+    },
+    {
+      header: "Time",
+      accessorKey: "start-time"
+    }
     ],
     [],
   )
