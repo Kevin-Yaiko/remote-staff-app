@@ -4,7 +4,9 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 export const ClassList = () => {
   const [classes, setClasses] = useState([])
   const [url, setUrl] = useState("http://localhost:8000/classes")
-  const [ranks, setRanks] = useState([])
+  const [ranks, setRanks] = useState(classes.map(instance => {
+    return {"id": instance.id, "rank" : 0}
+  }))
 
   const fetchClasses = useCallback(async() => {
     const response = await fetch(url)
@@ -16,8 +18,10 @@ export const ClassList = () => {
     fetchClasses()
   }, [fetchClasses])
 
+
   const handleRankChange = (e) => {
     const rowData = {"id": e.target.id, "rank": e.target.value}
+    
     setRanks((prevRanks) => {
       const nonSelectedClasses = prevRanks.filter((classes) => classes.id !== rowData.id)
       if (rowData.rank === "") {
@@ -32,21 +36,32 @@ export const ClassList = () => {
     console.log(ranks)
   }, [ranks])
 
+  const setValue = (id) => {
+    const rankedInstance = ranks.find(instance => instance.id === id);
+    console.log("ID:", id);
+    console.log("ranks:", ranks);
+    console.log("rankedInstance:", rankedInstance);
+    return rankedInstance ? rankedInstance.rank : "";
+  }
+  
+  
 
   const columns = useMemo(
     () => [
     {
       header: 'Rank',
       size: 40,
-      enableSorting: true,
+      enableColumnFilterModes: false,
       Cell: ({ row }) => (
         <input 
         type="number" 
         min="1" 
         max="10" 
         step="1" 
-        id={row.original.id} 
-        onChange={handleRankChange}/>
+        id={row.original.id}
+        value={setValue(row.original.id) || ""}
+        onChange={handleRankChange}
+        />
       )
     },
     {
@@ -94,6 +109,7 @@ export const ClassList = () => {
     data: classes,
     columns,
   })
+
 
   return (
     // <section>
