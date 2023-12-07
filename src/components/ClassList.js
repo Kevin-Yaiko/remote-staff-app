@@ -5,6 +5,8 @@ export const ClassList = () => {
   const [classes, setClasses] = useState([])
   const [url, setUrl] = useState("http://localhost:8000/classes")
   const [ranks, setRanks] = useState([])
+  const [tableKey, setTableKey] = useState(0)
+
 
   const fetchClasses = useCallback(async() => {
     const response = await fetch(url)
@@ -17,6 +19,13 @@ export const ClassList = () => {
   }, [fetchClasses])
 
 
+  const handleFilterModelChange = (filterModel) => {
+    // 'filterModel' contains information about the filters, including text typed into filter input fields
+    console.log(filterModel);
+
+    // ... Perform any other actions based on the filter change
+  };
+
   const handleRankChange = (e) => {
     const rowData = {"id": e.target.id, "rank": e.target.value}
     setRanks((prevRanks) => {
@@ -28,6 +37,7 @@ export const ClassList = () => {
     }
   })
   }
+
 
   useEffect(() => {
     console.log(ranks)
@@ -45,7 +55,8 @@ export const ClassList = () => {
         min="1" 
         max="10" 
         step="1" 
-        id={row.original.id} 
+        id={row.original.id}
+        value={ranks.rank}
         onChange={handleRankChange}/>
       )
     },
@@ -62,16 +73,17 @@ export const ClassList = () => {
     {
       header: 'Day',
       accessorKey: 'days',
-      Cell: ({ row }) => (
-        <div>
-          {row.original.days.map((day, idx) => {
-            if (row.original.days.length > 1 && row.original.days.length - idx > 1) {
-              return <span key={idx}>{day}, </span>
-            } else
-            return <span key={idx}>{day}</span>}
-          )}
-        </div>
-      )
+      // Cell: ({ row }) => (
+      //   <div>
+      //     {row.original.days.map((day, idx) => {
+      //       if (row.original.days.length > 1 && row.original.days.length - idx > 1) {
+      //         return <span key={idx}>{day}, </span>
+      //       } else
+      //       return <span key={idx}>{day}</span>}
+      //     )}
+      //   </div>
+      // ),
+      filterVariant: 'multi-select',
     },
     {
       header: "Start",
@@ -83,7 +95,8 @@ export const ClassList = () => {
     },
     {
       header: "Time",
-      accessorKey: "start-time"
+      accessorKey: "start-time",
+      filterVariant: 'multi-select',
     }
     ],
     [],
@@ -92,7 +105,12 @@ export const ClassList = () => {
   const table = useMaterialReactTable({
     data: classes,
     columns,
+    enableFacetedValues: true,
   })
+
+  // useEffect(() => {
+  //   setTableKey(Math.random())
+  // }, [table.getRowModel().rows.length])
 
 
   return (
@@ -104,7 +122,7 @@ export const ClassList = () => {
     //   ))}
     // </section>
     <section>
-      <MaterialReactTable table={table} />
+      <MaterialReactTable key={tableKey} table={table} />
     </section>
   )
 }
