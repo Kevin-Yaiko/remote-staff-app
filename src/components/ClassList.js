@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
+import { Field, Form, Formik } from "formik"
 
 export const ClassList = () => {
   const [classes, setClasses] = useState([])
   const [url, setUrl] = useState("http://localhost:8000/classes")
   const [ranks, setRanks] = useState([])
-  const [tableKey, setTableKey] = useState(0)
+
+  // For testing Formik
+  const initialValues = {}
 
 
   const fetchClasses = useCallback(async() => {
@@ -18,13 +21,6 @@ export const ClassList = () => {
     fetchClasses()
   }, [fetchClasses])
 
-
-  const handleFilterModelChange = (filterModel) => {
-    // 'filterModel' contains information about the filters, including text typed into filter input fields
-    console.log(filterModel);
-
-    // ... Perform any other actions based on the filter change
-  };
 
   const handleRankChange = (e) => {
     const rowData = {"id": e.target.id, "rank": e.target.value}
@@ -49,15 +45,22 @@ export const ClassList = () => {
     {
       header: 'Rank',
       size: 40,
-      Cell: ({ row }) => (
-        <input 
-        type="number" 
-        min="1" 
-        max="10" 
-        step="1" 
-        id={row.original.id}
-        value={ranks.rank}
-        onChange={handleRankChange}/>
+      // Cell: ({ row }) => (
+      //   <input 
+      //   type="number" 
+      //   min="1" 
+      //   max="10" 
+      //   step="1" 
+      //   id={row.original.id}
+      //   value={ranks.rank}
+      //   onChange={handleRankChange}/>
+      // )
+      Cell: ( {row}) => (
+        <Formik initialValues={initialValues}>
+          <Form>
+            <Field type="number" name="rank" />
+          </Form>
+        </Formik>
       )
     },
     {
@@ -112,6 +115,10 @@ export const ClassList = () => {
   //   setTableKey(Math.random())
   // }, [table.getRowModel().rows.length])
 
+  useEffect(() => {
+    console.log('columns changed')
+  }, [table])
+
 
   return (
     // <section>
@@ -122,7 +129,7 @@ export const ClassList = () => {
     //   ))}
     // </section>
     <section>
-      <MaterialReactTable key={tableKey} table={table} />
+      <MaterialReactTable table={table} />
     </section>
   )
 }
