@@ -8,10 +8,12 @@ function App() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<ClassList />}></Route>
-        <Route path="preferences" element={<Preferences />}></Route>
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<ClassList />}></Route>
+          <Route path="preferences" element={<Preferences />}></Route>
+        </Routes>
+      </main>
     </>
   );
 }
